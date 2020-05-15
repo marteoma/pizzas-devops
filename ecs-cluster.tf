@@ -32,6 +32,52 @@ resource "aws_autoscaling_policy" "asg-policy" {
   }
 }
 
+resource "aws_autoscaling_policy" "up-scale" {   
+    name  = "up-scale" 
+    autoscaling_group_name = aws_autoscaling_group.asg-cluster.name
+    adjustment_type        = "ChangeInCapacity"
+    policy_type            = "SimpleScaling"
+    scaling_adjustment     = 1
+}
+
+resource "aws_autoscaling_policy" "down-scale" {   
+    name  = "down-scale"
+    autoscaling_group_name = aws_autoscaling_group.asg-cluster.name
+    adjustment_type        = "ChangeInCapacity"
+    policy_type            = "SimpleScaling"
+    scaling_adjustment     = -1
+}
+
+resource "aws_cloudwatch_metric_alarm" "alarm-cpu-down" {
+  alarm_name          = "ecs-down"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "MemoryUtilization"
+  namespace           = "AWS/ECS"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "40"
+  unit                = "Percent"
+  alarm_description = "This metric monitors CPU utilization down"
+  alarm_actions     = [aws_autoscaling_policy.down-scale.arn]
+
+}
+
+resource "aws_cloudwatch_metric_alarm" "alarm-cpu-up" {
+  alarm_name          = "ecs-up"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "MemoryUtilization"
+  namespace           = "AWS/ECS"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "40"
+  unit                = "Percent"
+  alarm_description = "This metric monitors CPU utilization up"
+  alarm_actions     = [aws_autoscaling_policy.up-scale.arn]
+}
+
+
 resource "aws_launch_configuration" "cluster-lc" {
   name_prefix     = "demo-cluster-lc"
   security_groups = [aws_security_group.instance_sg.id]

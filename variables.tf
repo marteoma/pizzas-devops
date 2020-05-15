@@ -21,7 +21,7 @@ variable "asg_name" {
 
 variable "min_cluster_size" {
     description     = "Minimum size of the cluster"
-    default         = "1"
+    default         = "2"
 }
 
 variable "max_cluster_size" {
@@ -31,7 +31,7 @@ variable "max_cluster_size" {
 
 variable "desired_tasks" {
     description     = "Desired number of tasks running"
-    default         = "3"
+    default         = "2"
 }
 
 variable "asg_policy_name" {

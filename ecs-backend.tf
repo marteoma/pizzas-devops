@@ -6,7 +6,7 @@ resource "aws_ecs_service" "backend" {
   desired_count   = var.desired_tasks
   iam_role        = aws_iam_role.ecs-service-role.arn
   depends_on      = [aws_iam_role_policy_attachment.ecs-service-attach]
-
+  deployment_minimum_healthy_percent = 30
   load_balancer {
     target_group_arn = aws_alb_target_group.backend.id
     container_name   = var.container_name
