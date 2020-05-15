@@ -140,7 +140,6 @@ variable "rds_database_username" {
 # Bad practice: create a secret
 variable "rds_database_password" {
     description     = "RDS Database Password"
-    default         = "passw0rd"
 }
 
 variable "rds_subnet_group_name" {
