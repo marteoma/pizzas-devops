@@ -140,3 +140,56 @@ rds_database_password = "<password>"
 As we see in the image we we have the frontend in the S3 bucket, which is connected to an ALB that balance traffic to the differentes instances of the cluster. And the instances connect to an RDS.
 
 The EC2 are in an ASG and the RDS and the EC2 are in a private subnet, so it's not possible to acces directly.
+
+### CI/CD
+
+The both pipelines, (front and back), are made with CircleCI.
+
+#### Backend
+
+* Package and test
+* Build docker image
+* Push docker image to Dockerhub
+* Update ECS service
+
+This pipeline needs the following environment variables to work.
+
+* __AWS_ACCESS_KEY_ID__ Access key of the aws account
+
+* __AWS_DEFAULT_REGION__ Region for aws
+
+* __AWS_SECRET_ACCESS_KEY__ Secret key of the aws account
+
+* __DOCKER_LOGIN__ Username of dockerhub
+
+* __DOCKER_PASSWORD__ Token of dockerhub
+
+* __MYSQL_DB_DATABASE__ The name of the database created on AWS
+
+* __MYSQL_DB_HOST__ The address of the database created on AWS, is an output of terraform
+
+* __MYSQL_DB_PASSWORD__ The password of the database created on AWS
+
+* __MYSQL_DB_PORT__ The port of the database created on AWS
+
+* __MYSQL_DB_USER__ The user of the database created on AWS
+
+#### Frontend
+
+* Install modules
+* Test
+* Build
+* Upload to S3
+
+This pipeline needs the following environment variables to work.
+
+* __AWS_ACCESS_KEY_ID__ Access key of the aws account
+
+* __AWS_DEFAULT_REGION__ Region for aws
+
+* __AWS_SECRET_ACCESS_KEY__ Secret key of the aws account
+
+* __BACKEND__ DNS of the ALB, is an output of terraform
+
+* __BUCKET__ Name of the S3 bucket
+

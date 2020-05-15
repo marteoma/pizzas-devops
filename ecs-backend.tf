@@ -20,54 +20,9 @@ resource "aws_ecs_service" "backend" {
 
 resource "aws_ecs_task_definition" "backend" {
   family = var.cluster_task_name
+  depends_on      = [aws_db_instance.pizzas]
   execution_role_arn      = aws_iam_role.parameter-store-role.arn
-  container_definitions = <<EOF
-[
-  {
-    "portMappings": [
-      {
-        "hostPort": 0,
-        "protocol": "tcp",
-        "containerPort": 8080
-      }
-    ],
-    "secrets": [
-      {
-          "name": "MYSQL_DB_DATABASE",
-          "valueFrom": "arn:aws:ssm:us-east-1:427612221002:parameter/MYSQL_DB_DATABASE"
-      },
-      {
-          "name": "MYSQL_DB_PASSWORD",
-          "valueFrom": "arn:aws:ssm:us-east-1:427612221002:parameter/MYSQL_DB_PASSWORD"
-      },
-      {
-          "name": "MYSQL_DB_PORT",
-          "valueFrom": "arn:aws:ssm:us-east-1:427612221002:parameter/MYSQL_DB_PORT"
-      },
-      {
-        "name": "MYSQL_DB_HOST",
-        "valueFrom": "arn:aws:ssm:us-east-1:427612221002:parameter/MYSQL_DB_HOST"
-      },
-      {
-          "name": "MYSQL_DB_USER",
-          "valueFrom": "arn:aws:ssm:us-east-1:427612221002:parameter/MYSQL_DB_USER"
-      }
-    ],
-    "memory": 300,
-    "image": "marteoma/pizzas-back:latest",
-    "essential": true,
-    "name": "pizzasback",
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-group": "/ecs-demo/backend",
-        "awslogs-region": "us-east-1",
-        "awslogs-stream-prefix": "ecs"
-      }
-    }
-  }
-]
-EOF
+  container_definitions   = data.template_file.container_definition.rendered
 }
 
 resource "aws_cloudwatch_log_group" "backend" {

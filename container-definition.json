@@ -1,0 +1,45 @@
+[
+    {
+      "portMappings": [
+        {
+          "hostPort": 0,
+          "protocol": "tcp",
+          "containerPort": 8080
+        }
+      ],
+      "environment": [
+        {
+            "name": "MYSQL_DB_DATABASE",
+            "value": "${database}"
+        },
+        {
+            "name": "MYSQL_DB_PASSWORD",
+            "value": "${password}"
+        },
+        {
+            "name": "MYSQL_DB_PORT",
+            "value": "${port}"
+        },
+        {
+          "name": "MYSQL_DB_HOST",
+          "value": "${host}"
+        },
+        {
+            "name": "MYSQL_DB_USER",
+            "value": "${user}"
+        }
+      ],
+      "memory": 300,
+      "image": "marteoma/pizzas-back:latest",
+      "essential": true,
+      "name": "pizzasback",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs-demo/backend",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]

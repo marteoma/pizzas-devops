@@ -5,7 +5,6 @@ resource "aws_ecs_cluster" "backend-cluster" {
 #Compute
 resource "aws_autoscaling_group" "asg-cluster" {
   name                      = var.asg_name
-  # vpc_zone_identifier       = [aws_subnet.public.id[count.index]]
   vpc_zone_identifier       = [
     for s in aws_subnet.public :
       s.id
