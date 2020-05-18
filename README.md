@@ -205,3 +205,11 @@ This pipeline needs the following environment variables to work.
 
 * __BUCKET__ Name of the S3 bucket
 
+### Monitoring
+
+There are two options for monitoring the app; directly on CloudWatch log groups or in the ECS console.
+On the CloudWatch log groups, there are five log groups to watch the state of the app. These groups are under /ecs.
+Additional there are alarms, which work together with the autoscalin group.
+
+For the ECS, you can directly watch some metrics of the cluster just by entering the Amazon ECS page.
+If you go inside the cluster, you can get more information, about the state of the cluster.
