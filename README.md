@@ -2,9 +2,21 @@
 
 ## How is this made
 
+### Status
+
+* __BACK__
+
+[![RampUp](https://circleci.com/gh/marteoma/pizzas-back/tree/master.svg?style=shield
+)](https://app.circleci.com/pipelines/github/marteoma/pizzas-back)
+
+* __FRONT__
+
+[![RampUp](https://circleci.com/gh/marteoma/pizzas-frontend/tree/master.svg?style=shield
+)](https://app.circleci.com/pipelines/github/marteoma/pizzas-frontend)
+
 ### The app
 
-* __Frontend:__ ReactJS app
+* __Frontend:__ ReactJS app 
 
 * __Backend:__ Monolithic Spring Boot app with JPA
 
@@ -135,7 +147,7 @@ rds_database_password = "<password>"
 
 ### Arquitecture
 
-![Arquitecture](Arquitecture.png)
+![Arquitecture](./Arquitecture.png)
 
 As we see in the image we we have the frontend in the S3 bucket, which is connected to an ALB that balance traffic to the differentes instances of the cluster. And the instances connect to an RDS.
 
